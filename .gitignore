@@ -1,0 +1,10 @@
+.cache
+.idea
+.vagrant
+*.iml
+**/.DS_Store
+/target
+dependency-reduced-pom.xml
+target
+build/
+swagger/
