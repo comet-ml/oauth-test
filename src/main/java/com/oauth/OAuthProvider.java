@@ -1,4 +1,4 @@
-package com.oauth.test;
+package com.oauth;
 
 import com.github.scribejava.core.builder.api.DefaultApi20;
 

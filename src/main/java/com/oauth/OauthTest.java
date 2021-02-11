@@ -1,4 +1,4 @@
-package com.oauth.test;
+package com.oauth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.builder.ServiceBuilder;
