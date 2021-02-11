@@ -1,2 +1,2 @@
-# cassandra-connection-test
-testing cassandra connections
+# oAuth-connection-test
+testing oAuth connections
