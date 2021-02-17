@@ -19,6 +19,10 @@ public class OauthTest {
     private static final String authorizationBaseUrl = "https://dev-example.okta.com/oauth2/default/v1/authorize";
     private static final String protectedResourceUrl = "https://yourNetwork/oauth2/v3/userinfo"; // similar to https://connect2id.com/products/server/docs/api/userinfo
 
+
+    //JWT SUPPORT NEED TO UPDATE THIS:
+    private static final String hmacShaKeyForJWT = "someSecret";
+
     //NO ACTION NEEDED HERE
     private static final String NETWORK_NAME = "IDA";
     private static final String secretState = "secret" + new Random().nextInt(999_999);
@@ -27,8 +31,6 @@ public class OauthTest {
 
         final OAuth20Service service = new ServiceBuilder(clientId)
                 .apiSecret(clientSecret)
-                .scope("profile email") // replace with desired scope
-                .state(secretState)
                 .callback("https://www.comet.ml/oauth_callback")
                 .build(new OAuthProvider(accessTokenUrl, authorizationBaseUrl));
 
@@ -36,7 +38,7 @@ public class OauthTest {
         System.out.println("=== " + NETWORK_NAME + "'s OAuth Workflow ===");
         System.out.println();
 
-        final String authorizationUrl = service.getAuthorizationUrl();
+        final String authorizationUrl = service.getAuthorizationUrl(secretState);
 
         System.out.println("1) Go and authorize here:");
         System.out.println(authorizationUrl);
