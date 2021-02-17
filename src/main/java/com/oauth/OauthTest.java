@@ -94,6 +94,4 @@ public class OauthTest {
         SecretKey key = Keys.hmacShaKeyFor(hmacShaKeyForJWT.getBytes(StandardCharsets.UTF_8));
         return Jwts.parser().setSigningKey(key).parseClaimsJws(jwtToken);
     }
-
-
 }
