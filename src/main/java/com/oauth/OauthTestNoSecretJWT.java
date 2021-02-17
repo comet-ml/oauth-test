@@ -15,23 +15,24 @@ public class OauthTestNoSecretJWT {
     private static final String authorizationBaseUrl = "*** Please enter Authorize URL Here ***";
     private static final String callBackUrl = "http://localhost";
 
-    //NO ACTION NEEDE HERE
+    //NO ACTION NEEDED HERE
     private static final String NETWORK_NAME = "IDA";
     private static final String secretState = "secret" + new Random().nextInt(999_999);
 
     public static void main(String args[]) throws Exception {
+        NoSecretJWT.setAccessTokenEndPoint(accessTokenUrl);
+        NoSecretJWT.setAuthorizationBaseUrl(authorizationBaseUrl);
 
         final OAuth20Service service = new ServiceBuilder(clientId)
-                .scope("profile email") // replace with desired scope
-                .state(secretState)
+                .defaultScope("profile email") // replace with desired scope
                 .callback(callBackUrl)
-                .build(new OAuthProvider(accessTokenUrl, authorizationBaseUrl));
+                .build(NoSecretJWT.instance());
 
         final Scanner in = new Scanner(System.in, "UTF-8");
         System.out.println("=== " + NETWORK_NAME + "'s OAuth Workflow ===");
         System.out.println();
 
-        final String authorizationUrl = service.getAuthorizationUrl();
+        final String authorizationUrl = service.getAuthorizationUrl(secretState);
 
         System.out.println("1) Go and authorize here:");
         System.out.println(authorizationUrl);
