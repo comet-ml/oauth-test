@@ -3,12 +3,24 @@ package com.oauth;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.oauth.OAuth20Service;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.*;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Base64;
 import java.util.Random;
 import java.util.Scanner;
 
 public class OauthTestNoSecretJWT {
+    public static CloseableHttpClient httpClient;
+
     //NEED TO UPDATE THIS BASED ON AUTH SYSTEM
     private static final String clientId = "*** Please enter Client ID Here ***";
     private static final String accessTokenUrl = "*** Please enter Token URL Here ***";
@@ -46,7 +58,8 @@ public class OauthTestNoSecretJWT {
         System.out.println("returnedState: " + returnedState + " Should be equal to input state: " + secretState);
 
         System.out.println("Trading the Request Token for an Access Token...");
-        OAuth2AccessToken accessToken = service.getAccessToken(code);
+        //OAuth2AccessToken accessToken = service.getAccessToken(code);
+        OAuth2AccessToken accessToken = customAccessTokenRequest(code);
         System.out.println("Got the Access Token! type: " + accessToken.getTokenType());
         System.out.println("(The raw response looks like this: " + accessToken.getRawResponse() + "')");
 
@@ -58,5 +71,29 @@ public class OauthTestNoSecretJWT {
 
     private static String jwtDecodeSupport(String jwtToken) {
         return Base64.getDecoder().decode(jwtToken).toString();
+    }
+
+    private static  OAuth2AccessToken customAccessTokenRequest(String code) throws IOException, URISyntaxException {
+        httpClient = HttpClientBuilder.create().disableRedirectHandling().build();
+        String responseStr = null;
+
+        URIBuilder builder = new URIBuilder(accessTokenUrl);
+        builder.setParameter("client_id", clientId);
+        builder.setParameter("code", code);
+
+        HttpGet request = new HttpGet(builder.build());
+        String authHeader = String.format("Basic %s", clientId);
+        request.addHeader("Authorization", authHeader);
+
+        HttpContext  httpContext = new BasicHttpContext();
+        HttpResponse response = httpClient.execute(request, httpContext);
+        httpClient.close();
+
+        if (response.getEntity() != null) {
+            responseStr = EntityUtils.toString(response.getEntity(), "UTF-8");
+        }
+
+        String retrievedToken = "Must be parsed from Response";
+        return new OAuth2AccessToken(retrievedToken, responseStr);
     }
 }
