@@ -37,8 +37,8 @@ public class OauthTestWithJwt {
 
         final OAuth20Service service = new ServiceBuilder(clientId)
                 .apiSecret(clientSecret)
-                .scope("profile email") // replace with desired scope
-                .state(secretState)
+                //.scope("profile email") // replace with desired scope
+                //.state(secretState)
                 .callback("https://www.comet.ml/google/google_oauth_callback")
                 .build(new OAuthProvider(accessTokenUrl, authorizationBaseUrl));
 
