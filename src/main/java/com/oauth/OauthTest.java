@@ -19,12 +19,8 @@ public class OauthTest {
     private static final String authorizationBaseUrl = "https://dev-example.okta.com/oauth2/default/v1/authorize";
     private static final String protectedResourceUrl = "https://yourNetwork/oauth2/v3/userinfo"; // similar to https://connect2id.com/products/server/docs/api/userinfo
 
-
-    //JWT SUPPORT NEED TO UPDATE THIS:
-    private static final String hmacShaKeyForJWT = "someSecret";
-
     //NO ACTION NEEDED HERE
-    private static final String NETWORK_NAME = "IDA";
+    private static final String NETWORK_NAME = "Test";
     private static final String secretState = "secret" + new Random().nextInt(999_999);
 
     public static void main(String args[]) throws Exception {
