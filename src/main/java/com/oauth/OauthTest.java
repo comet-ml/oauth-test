@@ -13,6 +13,7 @@ import java.util.Scanner;
 public class OauthTest {
 
     //NEED TO UPDATE THIS BASED ON AUTH SYSTEM
+    private static final String scope = "profile email";
     private static final String clientId = "1018158525168-bgevh35rqj4fvut43il2pq7cckosvc77.apps.something.com";
     private static final String clientSecret = "NUjYgkt15D_l7Uh6rQi6mkD6asdasdasd";
     private static final String accessTokenUrl = "https://dev-example.okta.com/oauth2/default/v1/token/";
@@ -27,6 +28,7 @@ public class OauthTest {
 
         final OAuth20Service service = new ServiceBuilder(clientId)
                 .apiSecret(clientSecret)
+                .defaultScope(scope)
                 .callback("https://www.comet.ml/oauth_callback")
                 .build(new OAuthProvider(accessTokenUrl, authorizationBaseUrl));
 
